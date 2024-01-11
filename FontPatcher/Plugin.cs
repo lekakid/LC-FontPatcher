@@ -1,4 +1,6 @@
-﻿using BepInEx;
+﻿using System.Reflection;
+using BepInEx;
+using HarmonyLib;
 
 namespace FontPatcher;
 
@@ -12,10 +14,17 @@ class PluginInfo
 [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
 class Plugin : BaseUnityPlugin
 {
+    public static Plugin Instance;
+
     private void Awake()
     {
-        // Plugin startup logic
-        Logger.LogInfo($"Plugin {PluginInfo.GUID} is loaded!");
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
+        FontLoader.Load(Info.Location);
+        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
     }
 
     public void LogInfo(string msg)
