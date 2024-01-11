@@ -10,6 +10,7 @@ namespace FontPatcher;
 class FontLoader
 {
     static TMP_FontAsset NormalFont;
+    static TMP_FontAsset TransmitFont;
 
     public static void Load(string location)
     {
@@ -18,6 +19,7 @@ class FontLoader
             string dirName = Path.GetDirectoryName(location);
             AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(dirName, "font"));
             NormalFont = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.NormalFont);
+            TransmitFont = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.TransmitFont);
 
             Plugin.Instance.LogInfo($"Font loaded!");
         }
@@ -41,7 +43,11 @@ class FontLoader
             case "b":
                 SwapFont(__instance, NormalFont);
                 break;
+            case "edunline SDF":
+                SwapFont(__instance, TransmitFont);
+                break;
             default:
+                LogCurrentFont(__instance);
                 break;
         }
     }
@@ -57,5 +63,13 @@ class FontLoader
         instance.font.fallbackFontAssetTable.Add(prevFont);
 
         Plugin.Instance.LogInfo($"{target} | {prevFontName} => {nextFont.name}");
+    }
+
+    static void LogCurrentFont(TextMeshProUGUI instance)
+    {
+        string currentFontName = instance.font?.name;
+        string target = $"{instance.transform.name}({instance.text.Substring(0, Math.Min(instance.text.Length, 10))})";
+
+        Plugin.Instance.LogInfo($"{target} | {currentFontName}");
     }
 }
