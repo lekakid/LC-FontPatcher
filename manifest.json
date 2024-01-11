@@ -1,0 +1,9 @@
+{
+    "name": "FontPatcher",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/lekakid/LC-FontPatcher",
+    "description": "Replace in-game font with other things",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100"
+    ]
+}

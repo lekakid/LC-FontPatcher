@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>FontPatcher</AssemblyName>
-    <Description>FontPatcher</Description>
-    <Version>0.1.0</Version>
+    <Description>Replace in-game font with other things</Description>
+    <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
