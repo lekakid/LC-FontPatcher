@@ -41,10 +41,15 @@ Import TMP Essentials
 
 Add ttf font file that want to be import
 
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/8b5ee584-ea08-4fa1-845e-020e845f13bc)
+![image](https://github.com/lekakid/LC-SignalTranslatorAligner/assets/1362809/e573005b-a4b3-4185-8c81-a69993fb5b87)
 
-Generate font asset with your language's character set  
-If you want to use the in-game alphabet font, exclude the alphabet from the character set
+Use this font setting
+
+- Sampling Point Size: 10n (Recommend 90 or 80)
+- Padding: n (if samapling point size is 80, set 8)
+- Render Mode: RASTER
+
+Generate font asset with your language's character set
 
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/e509d526-af39-4ab3-b8c2-4420d73b048a)
 
