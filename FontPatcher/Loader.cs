@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore;
-using UnityEngine.TextCore.LowLevel;
 using TMPro;
 using HarmonyLib;
 
@@ -92,9 +90,7 @@ class FontLoader
 
     static void DisableFont(TMP_FontAsset font)
     {
-
         font.characterLookupTable.Clear();
-        font.TryAddCharacters("_");
         font.atlasPopulationMode = AtlasPopulationMode.Static;
     }
 }

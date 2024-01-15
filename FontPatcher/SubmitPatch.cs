@@ -8,14 +8,13 @@ class HUDManagerPatch
     [HarmonyPostfix, HarmonyPatch("OnEnable")]
     static void PostfixOnEnable()
     {
-        IngamePlayerSettings.Instance.playerInput.actions.FindAction("SubmitChat").Disable();
         HUDManager.Instance.chatTextField.onSubmit.AddListener(OnSubmitChat);
     }
 
     [HarmonyPostfix, HarmonyPatch("OnDisable")]
     static void PrefixOnDisable()
     {
-        IngamePlayerSettings.Instance.playerInput.actions.FindAction("SubmitChat").Enable();
+        HUDManager.Instance.chatTextField.onSubmit.RemoveListener(OnSubmitChat);
     }
 
     static void OnSubmitChat(string chatString)
@@ -38,5 +37,13 @@ class HUDManagerPatch
         EventSystem.current.SetSelectedGameObject(null);
         HUDManager.Instance.PingHUDElement(HUDManager.Instance.Chat);
         HUDManager.Instance.typingIndicator.enabled = false;
+    }
+
+    [HarmonyPrefix, HarmonyPatch("SubmitChat_performed")]
+    static void PrefixSubmitChat_performed(
+        ref bool __runOriginal
+    )
+    {
+        __runOriginal = false;
     }
 }
