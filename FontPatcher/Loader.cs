@@ -1,25 +1,49 @@
 using System;
-using TMPro;
-using UnityEngine;
-using HarmonyLib;
 using System.IO;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.TextCore;
+using UnityEngine.TextCore.LowLevel;
+using TMPro;
+using HarmonyLib;
 
 namespace FontPatcher;
 
 [HarmonyPatch]
 class FontLoader
 {
-    static TMP_FontAsset NormalFont;
-    static TMP_FontAsset TransmitFont;
+    class FontBundle
+    {
+        public TMP_FontAsset Normal;
+        public TMP_FontAsset Transmit;
+    }
+
+    static List<FontBundle> fontBundles = new();
 
     public static void Load(string location)
     {
         try
         {
             string dirName = Path.GetDirectoryName(location);
-            AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(dirName, "font"));
-            NormalFont = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.NormalFont);
-            TransmitFont = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.TransmitFont);
+            string fontsPath = Path.Combine(dirName, ResourcePath.FontPath);
+            DirectoryInfo di = new DirectoryInfo(fontsPath);
+            FileInfo[] fileInfos = di.GetFiles("*");
+
+            foreach (FileInfo info in fileInfos)
+            {
+                AssetBundle bundle = AssetBundle.LoadFromFile(info.FullName);
+
+                FontBundle tmp = new()
+                {
+                    Normal = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.NormalFont),
+                    Transmit = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.TransmitFont)
+                };
+
+                if (tmp.Normal) tmp.Normal.name = $"{info.Name}(Normal)";
+                if (tmp.Transmit) tmp.Transmit.name = $"{info.Name}(Transmit)";
+
+                fontBundles.Add(tmp);
+            }
 
             Plugin.Instance.LogInfo($"Font loaded!");
         }
@@ -29,47 +53,48 @@ class FontLoader
         }
     }
 
-    [HarmonyPostfix, HarmonyPatch(typeof(TextMeshProUGUI), "Awake")]
-    static void PostFixAwake(TextMeshProUGUI __instance)
+    [HarmonyPrefix, HarmonyPatch(typeof(TMP_FontAsset), "Awake")]
+    static void PrefixAwake(TMP_FontAsset __instance)
     {
-        string prevFontName = __instance.font?.name;
+        string prevFontName = __instance.name.Split(" ")[0];
 
         switch (prevFontName)
         {
-            case "3270-Regular SDF":
+            case "3270-Regular":
             case "3270-HUDIngame":
             case "3270-HUDIngameB":
-            case "3270-HUDIngame - Variant":
             case "b":
-                SwapFont(__instance, NormalFont);
+                if (!Plugin.Instance.configNormalIngameFont.Value)
+                {
+                    DisableFont(__instance);
+                }
+                foreach (FontBundle bundle in fontBundles)
+                {
+                    if (!bundle.Normal) continue;
+                    __instance.fallbackFontAssetTable.Add(bundle.Normal);
+                }
                 break;
-            case "edunline SDF":
-                SwapFont(__instance, TransmitFont);
+            case "edunline":
+                if (!Plugin.Instance.configTransmitIngameFont.Value)
+                {
+                    DisableFont(__instance);
+                }
+                foreach (FontBundle bundle in fontBundles)
+                {
+                    if (!bundle.Transmit) continue;
+                    __instance.fallbackFontAssetTable.Add(bundle.Transmit);
+                }
                 break;
             default:
-                LogCurrentFont(__instance);
                 break;
         }
     }
 
-    static void SwapFont(TextMeshProUGUI instance, TMP_FontAsset nextFont)
+    static void DisableFont(TMP_FontAsset font)
     {
-        string prevFontName = instance.font?.name;
-        string target = $"{instance.transform.name}({instance.text.Substring(0, Math.Min(instance.text.Length, 10))})";
 
-        TMP_FontAsset prevFont = instance.font;
-        instance.font = nextFont;
-        instance.fontMaterial = nextFont.material;
-        instance.font.fallbackFontAssetTable.Add(prevFont);
-
-        Plugin.Instance.LogInfo($"{target} | {prevFontName} => {nextFont.name}");
-    }
-
-    static void LogCurrentFont(TextMeshProUGUI instance)
-    {
-        string currentFontName = instance.font?.name;
-        string target = $"{instance.transform.name}({instance.text.Substring(0, Math.Min(instance.text.Length, 10))})";
-
-        Plugin.Instance.LogInfo($"{target} | {currentFontName}");
+        font.characterLookupTable.Clear();
+        font.TryAddCharacters("_");
+        font.atlasPopulationMode = AtlasPopulationMode.Static;
     }
 }
