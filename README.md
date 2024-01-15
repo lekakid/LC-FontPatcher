@@ -1,9 +1,27 @@
 # LC-FontPatcher
 
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/4bee573a-752d-4733-8fbc-03e19dcc2ce9)
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/1c63a7e2-e297-4c2f-ad37-c91a069d2250)
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/c11faea3-9c86-495a-99d4-ed56742ecf66)
 
-Change in-game font to other font asset
+Change in-game font to other font asset  
+Fix chat input bug on IME input
+
+## Config
+
+⚠️ Configuration files are generated after launching the game, with the mod installed, at least once.
+
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/68ca94a5-52a3-4525-bc78-c6ef4c672fed)
+
+## default font assets
+
+- 00 default: English('$' fixed)
+- 01 kr: Korean
+- 02 jp: Japanese
+
+Each font is tried in the order of its name.
+
+- "Hello": in-game(if used) => 00 default
+- "한글": in-game(if used) => 00 default => 01 kr
+- "日本語": in-game(if used) => 00 default => 01 kr => 02 jp
 
 ## How to create another language's font AssetBundle
 
@@ -54,10 +72,11 @@ public class CreateAssetBundles
     static void BuildAllAssetBundles()
     {
         string assetBundleDirectory = "Assets/AssetBundles";
-        if(!Directory.Exists(assetBundleDirectory))
+        if (Directory.Exists(assetBundleDirectory))
         {
-            Directory.CreateDirectory(assetBundleDirectory);
+            Directory.Delete(assetBundleDirectory, true);
         }
+        Directory.CreateDirectory(assetBundleDirectory);
         BuildPipeline.BuildAssetBundles(assetBundleDirectory,
                                         BuildAssetBundleOptions.None,
                                         BuildTarget.StandaloneWindows);
@@ -68,7 +87,7 @@ public class CreateAssetBundles
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/e613af8c-dfff-4775-8a7b-c0c3c8a93304)
 
 Select Normal.asset, Transmit.asset, add to AssetBundle  
-AssetBundle's name must be "font"
+Set AssetBundle's name what you want (e.g. "jp", "cn", etc)
 
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/e99c9ba1-17cb-4565-8b5f-6b5da9041ff1)
 
@@ -76,8 +95,8 @@ Build AssetBundles
 
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/5e77314d-db60-4370-b2f2-7452f8d78ec6)
 
-Copy "font" file
+Copy AssetBundles file
 
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/f9be197b-ede2-4104-ab93-67a96f752e07)
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/66d07c17-3252-404d-ac56-8d00fed1dcdb)
 
-Browse mod folder, then replace "font" file
+Browse "fonts" folder of mod folder, then paste AssetBundles file.
