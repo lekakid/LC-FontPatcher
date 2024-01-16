@@ -61,6 +61,7 @@ class FontLoader
             case "3270-Regular":
             case "3270-HUDIngame":
             case "3270-HUDIngameB":
+            case "DialogueText":
             case "b":
                 if (!Plugin.Instance.configNormalIngameFont.Value)
                 {
