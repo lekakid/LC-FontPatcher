@@ -14,8 +14,8 @@ Fix chat input bug on IME input
 ## default font assets
 
 - 00 default: English('$' fixed)
-- 01 kr: Korean
-- 02 jp: Japanese
+- 01 kr: Korean (Orbit.ttf / DungGuenMo.ttf)
+- 02 jp: Japanese (Pretendard.ttf / Best-Ten.otf)
 
 Each font is tried in the order of its name.
 
