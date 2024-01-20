@@ -121,7 +121,7 @@ Add ttf/otf font file that want to be import
 ![image](https://github.com/lekakid/LC-SignalTranslatorAligner/assets/1362809/e573005b-a4b3-4185-8c81-a69993fb5b87)
 
 - Sampling Point Size: 10n (Recommend 90 or 80)
-- Padding: n (if samapling point size is 80, set 8)
+- Padding: n (if sampling point size is 80, set 8)
 - Render Mode: RASTER
 
 Generate font asset with your language's character set
