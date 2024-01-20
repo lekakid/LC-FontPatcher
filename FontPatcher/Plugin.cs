@@ -68,8 +68,6 @@ class Plugin : BaseUnityPlugin
 
     public static void LogError(string msg)
     {
-        if (!configDebugLog.Value) return;
-
         Instance.Logger.LogError(msg);
     }
 }
