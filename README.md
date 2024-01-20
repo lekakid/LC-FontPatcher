@@ -7,9 +7,7 @@ Fix chat input bug on IME input
 
 ## Config
 
-⚠️ Configuration files are generated after launching the game, with the mod installed, at least once.
-
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/68ca94a5-52a3-4525-bc78-c6ef4c672fed)
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/ca6112ab-38f5-4386-aca8-60bd872bf367)
 
 ## default font assets
 
@@ -25,6 +23,8 @@ Each font is tried in the order of its name.
 
 ## How to create another language's font AssetBundle
 
+### Initialize project
+
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/6475b6c9-37dc-47b1-a837-2461d505869e)
 
 Create a new project with Unity 2022.3.9
@@ -36,27 +36,6 @@ Open Window > TextMeshPro > Font Asset Creator
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/f3942a57-be3b-4966-96a6-563a9756a934)
 
 Import TMP Essentials
-
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/06739b1e-64ee-4d9c-81e9-4212b5a1895c)
-
-Add ttf font file that want to be import
-
-![image](https://github.com/lekakid/LC-SignalTranslatorAligner/assets/1362809/e573005b-a4b3-4185-8c81-a69993fb5b87)
-
-Use this font setting
-
-- Sampling Point Size: 10n (Recommend 90 or 80)
-- Padding: n (if samapling point size is 80, set 8)
-- Render Mode: RASTER
-
-Generate font asset with your language's character set
-
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/e509d526-af39-4ab3-b8c2-4420d73b048a)
-
-Save with the name below
-
-- Normal: Default game font
-- Transmit: Signal translator's HUD font
 
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/945a98bc-5cbb-427e-a3e6-03167c6decfd)
 
@@ -88,6 +67,44 @@ public class CreateAssetBundles
     }
 }
 ```
+
+After once initialize project, you don't need to repeat this step
+
+### How to make font asset
+
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/06739b1e-64ee-4d9c-81e9-4212b5a1895c)
+
+Add ttf/otf font file that want to be import
+
+![image](https://github.com/lekakid/LC-SignalTranslatorAligner/assets/1362809/e573005b-a4b3-4185-8c81-a69993fb5b87)
+
+- Sampling Point Size: 10n (Recommend 90 or 80)
+- Padding: n (if samapling point size is 80, set 8)
+- Render Mode: RASTER
+
+Generate font asset with your language's character set
+
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/e509d526-af39-4ab3-b8c2-4420d73b048a)
+
+Save with the name below
+
+- Normal: Default game font
+- Transmit: Signal translator's HUD font
+
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/ed204743-4926-4cd0-a8d3-fe97dcbb8046)
+
+(Recommend) Set line height to 98.1, ascent line 72.
+These values are in-game setting.
+
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/c9f7b3e7-55d9-4d52-8cf8-deef54b69b28)
+
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/bf54eb54-1540-4449-aa7b-6d68fe1fa536)
+
+Set font's material shader to Distance Field
+
+![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/6cc99b7d-081a-4643-999d-b1a24ccacd3d)
+
+Set font's texture filter mode to Bilinear
 
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/e613af8c-dfff-4775-8a7b-c0c3c8a93304)
 
