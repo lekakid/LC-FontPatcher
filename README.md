@@ -21,6 +21,48 @@ Each font is tried in the order of its name.
 - "한글": in-game(if used) => 00 default => 01 kr
 - "日本語": in-game(if used) => 00 default => 01 kr => 02 jp
 
+## How to use this mod as dependency
+
+You can download [here](https://github.com/lekakid/LC-FontPatcher/releases/latest/download/LeKAKiD-FontAssetExample-1.0.0.zip) example mod
+
+### Folder structure
+
+```bash
+.
+|-- config
+|   |-- FontPatcher
+|   |   `-- TestPath
+|   |       `-- korean
+|   `-- lekakid.lcfontpatcher.cfg
+|-- icon.png
+`-- manifest.json
+```
+
+### Minimized config
+
+```Properties
+## Settings file was created by plugin FontPatcher v1.2.0
+## Plugin GUID: lekakid.lcfontpatcher
+
+[General]
+
+## Using in-game default normal font
+# Setting type: Boolean
+# Default value: true
+UsingNormalIngameFont = true
+
+## Using in-game default normal font
+# Setting type: Boolean
+# Default value: true
+UsingTransmitIngameFont = true
+
+[Path]
+
+# Setting type: String
+# Default value: FontPatcher\default
+FontAssetsPath = FontPatcher\TestPath
+```
+
 ## How to create another language's font AssetBundle
 
 ### Initialize project
