@@ -48,7 +48,7 @@ class Plugin : BaseUnityPlugin
         configNormalRegexPattern = Config.Bind(
             "Regex",
             "NormalFontNameRegex",
-            @"^(b|DialogueText|3270-.*)$",
+            @"^(b|DialogueText|3270.*)$",
             "Normally, you don't neet to change it"
         );
 
