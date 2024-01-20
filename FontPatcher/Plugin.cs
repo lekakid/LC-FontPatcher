@@ -15,8 +15,8 @@ class PluginInfo
 [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
 class Plugin : BaseUnityPlugin
 {
-    public ConfigEntry<bool> configNormalIngameFont;
-    public ConfigEntry<bool> configTransmitIngameFont;
+    public static ConfigEntry<bool> configNormalIngameFont;
+    public static ConfigEntry<bool> configTransmitIngameFont;
 
     public static Plugin Instance;
 

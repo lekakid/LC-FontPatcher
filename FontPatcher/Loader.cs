@@ -63,7 +63,7 @@ class FontLoader
             case "3270-HUDIngameB":
             case "DialogueText":
             case "b":
-                if (!Plugin.Instance.configNormalIngameFont.Value)
+                if (!Plugin.configNormalIngameFont.Value)
                 {
                     DisableFont(__instance);
                 }
@@ -74,7 +74,7 @@ class FontLoader
                 }
                 break;
             case "edunline":
-                if (!Plugin.Instance.configTransmitIngameFont.Value)
+                if (!Plugin.configTransmitIngameFont.Value)
                 {
                     DisableFont(__instance);
                 }
