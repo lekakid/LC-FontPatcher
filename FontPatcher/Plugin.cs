@@ -17,6 +17,7 @@ class Plugin : BaseUnityPlugin
 {
     public static ConfigEntry<bool> configNormalIngameFont;
     public static ConfigEntry<bool> configTransmitIngameFont;
+    public static ConfigEntry<bool> configDebugLog;
 
     public static Plugin Instance;
 
@@ -41,22 +42,34 @@ class Plugin : BaseUnityPlugin
             "Using in-game default normal font"
         );
 
+        configDebugLog = Config.Bind(
+            "Debug",
+            "Log",
+            false
+        );
+
         FontLoader.Load(Info.Location);
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
     }
 
     public static void LogInfo(string msg)
     {
+        if (!configDebugLog.Value) return;
+
         Instance.Logger.LogInfo(msg);
     }
 
     public static void LogWarning(string msg)
     {
+        if (!configDebugLog.Value) return;
+
         Instance.Logger.LogWarning(msg);
     }
 
     public static void LogError(string msg)
     {
+        if (!configDebugLog.Value) return;
+
         Instance.Logger.LogError(msg);
     }
 }
