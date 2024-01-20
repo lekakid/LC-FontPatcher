@@ -1,6 +1,6 @@
 {
     "name": "FontPatcher",
-    "version_number": "1.1.5",
+    "version_number": "1.2.0",
     "website_url": "https://github.com/lekakid/LC-FontPatcher",
     "description": "Replace in-game font with other things",
     "dependencies": [
