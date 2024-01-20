@@ -45,18 +45,18 @@ class Plugin : BaseUnityPlugin
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
     }
 
-    public void LogInfo(string msg)
+    public static void LogInfo(string msg)
     {
-        Logger.LogInfo(msg);
+        Instance.Logger.LogInfo(msg);
     }
 
-    public void LogWarning(string msg)
+    public static void LogWarning(string msg)
     {
-        Logger.LogWarning(msg);
+        Instance.Logger.LogWarning(msg);
     }
 
-    public void LogError(string msg)
+    public static void LogError(string msg)
     {
-        Logger.LogError(msg);
+        Instance.Logger.LogError(msg);
     }
 }

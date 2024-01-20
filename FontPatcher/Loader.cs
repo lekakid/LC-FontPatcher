@@ -43,11 +43,11 @@ class FontLoader
                 fontBundles.Add(tmp);
             }
 
-            Plugin.Instance.LogInfo($"Font loaded!");
+            Plugin.LogInfo($"Font loaded!");
         }
         catch (Exception e)
         {
-            Plugin.Instance.LogError(e.Message);
+            Plugin.LogError(e.Message);
         }
     }
 
