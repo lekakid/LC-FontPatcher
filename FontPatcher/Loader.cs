@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using TMPro;
 using HarmonyLib;
@@ -17,6 +18,8 @@ class FontLoader
     }
 
     static List<FontBundle> fontBundles = new();
+    static Regex normalRegex;
+    static Regex transmitRegex;
 
     public static void Load(string location)
     {
@@ -43,6 +46,9 @@ class FontLoader
                 fontBundles.Add(tmp);
             }
 
+            normalRegex = new Regex(Plugin.configNormalRegexPattern.Value);
+            transmitRegex = new Regex(Plugin.configTransmitRegexPattern.Value);
+
             Plugin.LogInfo($"Font loaded!");
         }
         catch (Exception e)
@@ -54,39 +60,41 @@ class FontLoader
     [HarmonyPrefix, HarmonyPatch(typeof(TMP_FontAsset), "Awake")]
     static void PrefixAwake(TMP_FontAsset __instance)
     {
-        string prevFontName = __instance.name.Split(" ")[0];
+        string fontName = __instance.name;
 
-        switch (prevFontName)
+        if (normalRegex.IsMatch(fontName))
         {
-            case "3270-Regular":
-            case "3270-HUDIngame":
-            case "3270-HUDIngameB":
-            case "DialogueText":
-            case "b":
-                if (!Plugin.configNormalIngameFont.Value)
-                {
-                    DisableFont(__instance);
-                }
-                foreach (FontBundle bundle in fontBundles)
-                {
-                    if (!bundle.Normal) continue;
-                    __instance.fallbackFontAssetTable.Add(bundle.Normal);
-                }
-                break;
-            case "edunline":
-                if (!Plugin.configTransmitIngameFont.Value)
-                {
-                    DisableFont(__instance);
-                }
-                foreach (FontBundle bundle in fontBundles)
-                {
-                    if (!bundle.Transmit) continue;
-                    __instance.fallbackFontAssetTable.Add(bundle.Transmit);
-                }
-                break;
-            default:
-                break;
+            if (!Plugin.configNormalIngameFont.Value)
+            {
+                DisableFont(__instance);
+            }
+            foreach (FontBundle bundle in fontBundles)
+            {
+                if (!bundle.Normal) continue;
+                __instance.fallbackFontAssetTable.Add(bundle.Normal);
+            }
+
+            Plugin.LogInfo($"[{fontName}] font patched (Normal)");
+            return;
         }
+
+        if (transmitRegex.IsMatch(fontName))
+        {
+            if (!Plugin.configTransmitIngameFont.Value)
+            {
+                DisableFont(__instance);
+            }
+            foreach (FontBundle bundle in fontBundles)
+            {
+                if (!bundle.Transmit) continue;
+                __instance.fallbackFontAssetTable.Add(bundle.Transmit);
+            }
+
+            Plugin.LogInfo($"[{fontName}] font patched (Transmit)");
+            return;
+        }
+
+        Plugin.LogWarning($"[{fontName}] not patched");
     }
 
     static void DisableFont(TMP_FontAsset font)

@@ -17,6 +17,8 @@ class Plugin : BaseUnityPlugin
 {
     public static ConfigEntry<bool> configNormalIngameFont;
     public static ConfigEntry<bool> configTransmitIngameFont;
+    public static ConfigEntry<string> configNormalRegexPattern;
+    public static ConfigEntry<string> configTransmitRegexPattern;
     public static ConfigEntry<bool> configDebugLog;
 
     public static Plugin Instance;
@@ -40,6 +42,20 @@ class Plugin : BaseUnityPlugin
             "UsingTransmitIngameFont",
             true,
             "Using in-game default normal font"
+        );
+
+        configNormalRegexPattern = Config.Bind(
+            "Regex",
+            "NormalFontNameRegex",
+            @"^(b|DialogueText|3270-.*)$",
+            "Normally, you don't neet to change it"
+        );
+
+        configTransmitRegexPattern = Config.Bind(
+            "Regex",
+            "TransmitFontNameRegex",
+            @"^edunline.*$",
+            "Normally, you don't neet to change it"
         );
 
         configDebugLog = Config.Bind(
