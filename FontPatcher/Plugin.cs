@@ -9,7 +9,7 @@ class PluginInfo
 {
     public const string GUID = "lekakid.lcfontpatcher";
     public const string Name = "FontPatcher";
-    public const string Version = "1.0.0";
+    public const string Version = "1.1.5";
 }
 
 [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
