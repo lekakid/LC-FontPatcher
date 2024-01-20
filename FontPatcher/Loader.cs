@@ -21,12 +21,12 @@ class FontLoader
     static Regex normalRegex;
     static Regex transmitRegex;
 
-    public static void Load(string location)
+    public static void Load()
     {
         try
         {
-            string dirName = Path.GetDirectoryName(location);
-            string fontsPath = Path.Combine(dirName, ResourcePath.FontPath);
+            string configPath = Path.GetDirectoryName(Plugin.Instance.Config.ConfigFilePath);
+            string fontsPath = Path.Combine(configPath, Plugin.configFontAssetPath.Value);
             DirectoryInfo di = new DirectoryInfo(fontsPath);
             FileInfo[] fileInfos = di.GetFiles("*");
 

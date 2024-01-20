@@ -19,6 +19,7 @@ class Plugin : BaseUnityPlugin
     public static ConfigEntry<bool> configTransmitIngameFont;
     public static ConfigEntry<string> configNormalRegexPattern;
     public static ConfigEntry<string> configTransmitRegexPattern;
+    public static ConfigEntry<string> configFontAssetPath;
     public static ConfigEntry<bool> configDebugLog;
 
     public static Plugin Instance;
@@ -58,13 +59,19 @@ class Plugin : BaseUnityPlugin
             "Normally, you don't neet to change it"
         );
 
+        configFontAssetPath = Config.Bind(
+            "Path",
+            "FontAssetsPath",
+            @"FontPatcher\default"
+        );
+
         configDebugLog = Config.Bind(
             "Debug",
             "Log",
             false
         );
 
-        FontLoader.Load(Info.Location);
+        FontLoader.Load();
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
     }
 
