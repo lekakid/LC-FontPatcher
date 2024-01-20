@@ -159,8 +159,4 @@ Build AssetBundles
 
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/5e77314d-db60-4370-b2f2-7452f8d78ec6)
 
-Copy AssetBundles file
-
-![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/66d07c17-3252-404d-ac56-8d00fed1dcdb)
-
-Browse "fonts" folder of mod folder, then paste AssetBundles file.
+Copy AssetBundles file to your mod folder
