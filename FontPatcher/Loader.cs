@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -13,6 +14,7 @@ class FontLoader
 {
     class FontBundle
     {
+        public string BundleName;
         public TMP_FontAsset Normal;
         public TMP_FontAsset Transmit;
     }
@@ -27,29 +29,61 @@ class FontLoader
         {
             string configPath = Path.GetDirectoryName(Plugin.Instance.Config.ConfigFilePath);
             string fontsPath = Path.Combine(configPath, Plugin.configFontAssetPath.Value);
+            Plugin.LogInfo($"Font path: {fontsPath}");
+
             DirectoryInfo di = new DirectoryInfo(fontsPath);
             FileInfo[] fileInfos = di.GetFiles("*");
 
+            int sucessCount = 0;
+            int failCount = 0;
             foreach (FileInfo info in fileInfos)
             {
-                AssetBundle bundle = AssetBundle.LoadFromFile(info.FullName);
-
-                FontBundle tmp = new()
+                try
                 {
-                    Normal = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.NormalFont),
-                    Transmit = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.TransmitFont)
-                };
+                    AssetBundle bundle = AssetBundle.LoadFromFile(info.FullName);
+                    Plugin.LogInfo($"[{info.Name}] loaded");
 
-                if (tmp.Normal) tmp.Normal.name = $"{info.Name}(Normal)";
-                if (tmp.Transmit) tmp.Transmit.name = $"{info.Name}(Transmit)";
+                    FontBundle tmp = new()
+                    {
+                        Normal = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.NormalFont),
+                        Transmit = bundle.LoadAsset<TMP_FontAsset>(ResourcePath.TransmitFont)
+                    };
 
-                fontBundles.Add(tmp);
+                    if (tmp.Normal)
+                    {
+                        tmp.BundleName = info.Name;
+                        tmp.Normal.name = $"{info.Name}(Normal)";
+                        Plugin.LogInfo($"[{info.Name}] Normal font found ({tmp.Normal.name})");
+                    }
+                    if (tmp.Transmit)
+                    {
+                        tmp.BundleName = info.Name;
+                        tmp.Transmit.name = $"{info.Name}(Transmit)";
+                        Plugin.LogInfo($"[{info.Name}] Transmit font found ({tmp.Transmit.name})");
+                    }
+
+                    if (tmp.BundleName == null)
+                    {
+                        throw new Exception($"Not included recognizable font");
+                    }
+
+                    fontBundles.Add(tmp);
+                    sucessCount += 1;
+                }
+                catch (Exception e)
+                {
+                    Plugin.LogError($"[{info.Name}] load failed: {e.Message}");
+                    failCount += 1;
+                }
             }
 
             normalRegex = new Regex(Plugin.configNormalRegexPattern.Value);
             transmitRegex = new Regex(Plugin.configTransmitRegexPattern.Value);
 
-            Plugin.LogInfo($"Font loaded!");
+            StringBuilder stringBuilder = new();
+            stringBuilder.Append($"{sucessCount} fonts loaded");
+            if (failCount > 0) stringBuilder.Append($", {failCount} fonts load failed");
+            Plugin.LogInfo(stringBuilder.ToString());
         }
         catch (Exception e)
         {
@@ -74,7 +108,10 @@ class FontLoader
                 __instance.fallbackFontAssetTable.Add(bundle.Normal);
             }
 
-            Plugin.LogInfo($"[{fontName}] font patched (Normal)");
+            if (__instance.fallbackFontAssetTable.Count > 0)
+            {
+                Plugin.LogInfo($"[{fontName}] font patched (Normal)");
+            }
             return;
         }
 
@@ -90,7 +127,10 @@ class FontLoader
                 __instance.fallbackFontAssetTable.Add(bundle.Transmit);
             }
 
-            Plugin.LogInfo($"[{fontName}] font patched (Transmit)");
+            if (__instance.fallbackFontAssetTable.Count > 0)
+            {
+                Plugin.LogInfo($"[{fontName}] font patched (Transmit)");
+            }
             return;
         }
 
