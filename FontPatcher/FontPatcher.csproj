@@ -24,23 +24,45 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>lib/Assembly-CSharp.dll</HintPath>
+      <HintPath>$(LethalCompanyDir)/Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Netcode.Runtime">
-      <HintPath>lib/Unity.Netcode.Runtime.dll</HintPath>
+      <HintPath>$(LethalCompanyDir)/Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>lib/UnityEngine.UI.dll</HintPath>
+      <HintPath>$(LethalCompanyDir)/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InputSystem">
-      <HintPath>lib/Unity.InputSystem.dll</HintPath>
+      <HintPath>$(LethalCompanyDir)/Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="TMPro">
-      <HintPath>lib/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>$(LethalCompanyDir)/Unity.TextMeshPro.dll</HintPath>
     </Reference>
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <LethalCompanyDir>C:/Program Files (x86)/Steam/steamapps/common/Lethal Company/Lethal Company_Data/Managed</LethalCompanyDir>
+    <FontAssetPath>$(ProjectDir)../../FontAssetUnityProject/Assets/AssetBundles</FontAssetPath>
+  </PropertyGroup>
+
+  <Target Name="Bundle" DependsOnTargets="AddGeneratedFile" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
+      <RemoveDir Directories="$(ProjectDir)assets" />
+      <MakeDir Directories="$(ProjectDir)assets" />
+      <ItemGroup>
+        <FontAssets
+          Include="$(FontAssetPath)\*.*"
+          Exclude="$(FontAssetPath)\AssetBundles*;$(FontAssetPath)\*.meta;$(FontAssetPath)\*.manifest"
+        />
+      </ItemGroup>
+      <Copy SourceFiles="@(FontAssets)" DestinationFolder="$(ProjectDir)assets" />
+      <Exec Command="tcli build --package-version $(BepInExPluginVersion)" />
+  </Target>
+
+  <Target Name="Test" AfterTargets="PostBuildEvent" Condition="$(Configuration) != 'Release'">
+    <Copy Sourcefiles="$(ProjectDir)bin/Debug/net472/FontPatcher.dll" DestinationFolder="$(ProjectDir)dist" />
+  </Target>
 </Project>

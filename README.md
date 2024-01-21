@@ -128,7 +128,8 @@ Generate font asset with your language's character set
 
 ![image](https://github.com/lekakid/LC-FontPatcher/assets/1362809/e509d526-af39-4ab3-b8c2-4420d73b048a)
 
-Save with the name below
+FontPatcher recognize by font's name.
+You must be save font file according to the list below.
 
 - Normal: Default game font
 - Transmit: Signal translator's HUD font

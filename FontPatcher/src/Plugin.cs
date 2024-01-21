@@ -8,8 +8,8 @@ namespace FontPatcher;
 class PluginInfo
 {
     public const string GUID = "lekakid.lcfontpatcher";
-    public const string Name = "FontPatcher";
-    public const string Version = "1.2.1";
+    public const string Name = MyPluginInfo.PLUGIN_NAME;
+    public const string Version = MyPluginInfo.PLUGIN_VERSION;
 }
 
 [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]

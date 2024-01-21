@@ -87,7 +87,7 @@ class FontLoader
         }
         catch (Exception e)
         {
-            Plugin.LogError(e.Message);
+            Plugin.LogError(e.ToString());
         }
     }
 
