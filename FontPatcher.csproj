@@ -46,7 +46,7 @@
 
   <PropertyGroup>
     <LethalCompanyDir>C:/Program Files (x86)/Steam/steamapps/common/Lethal Company/Lethal Company_Data/Managed</LethalCompanyDir>
-    <FontAssetPath>$(ProjectDir)../../FontAssetUnityProject/Assets/AssetBundles</FontAssetPath>
+    <FontAssetPath>$(ProjectDir)../FontAssetUnityProject/Assets/AssetBundles</FontAssetPath>
   </PropertyGroup>
 
   <Target Name="Bundle" DependsOnTargets="AddGeneratedFile" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
