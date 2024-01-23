@@ -92,7 +92,7 @@ class FontLoader
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(TMP_FontAsset), "Awake")]
-    static void PrefixAwake(TMP_FontAsset __instance)
+    static void PatchFont(TMP_FontAsset __instance)
     {
         string fontName = __instance.name;
 
@@ -135,6 +135,14 @@ class FontLoader
         }
 
         Plugin.LogWarning($"[{fontName}] not patched");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(TextMeshProUGUI), "Awake")]
+    static void PatchText(TextMeshProUGUI __instance)
+    {
+        if (__instance.font.fallbackFontAssetTable.Count > 0) return;
+
+        PatchFont(__instance.font);
     }
 
     static void DisableFont(TMP_FontAsset font)
