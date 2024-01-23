@@ -13,12 +13,12 @@ BepInEx-BepInExPack = "5.4.2100"
 [build]
 icon = "./icon.png"
 readme = "./README.md"
-outdir = "./dist"
+outdir = "./build"
 [[build.copy]]
-source = "./bin/Release/net472/FontPatcher.dll"
+source = "./build"
 target = "plugins/"
 [[build.copy]]
-source = "../LICENSE"
+source = "./LICENSE"
 target = "/"
 [[build.copy]]
 source = "./assets"
