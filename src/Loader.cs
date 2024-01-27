@@ -92,7 +92,7 @@ class FontLoader
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(TMP_FontAsset), "Awake")]
-    static void PatchFont(TMP_FontAsset __instance)
+    static void PatchFontAwake(TMP_FontAsset __instance)
     {
         string fontName = __instance.name;
 
@@ -102,13 +102,18 @@ class FontLoader
             {
                 DisableFont(__instance);
             }
+
+            int patchCount = 0;
             foreach (FontBundle bundle in fontBundles)
             {
                 if (!bundle.Normal) continue;
+                if (__instance.fallbackFontAssetTable.Contains(bundle.Normal)) continue;
+
                 __instance.fallbackFontAssetTable.Add(bundle.Normal);
+                patchCount += 1;
             }
 
-            if (__instance.fallbackFontAssetTable.Count > 0)
+            if (patchCount > 0)
             {
                 Plugin.LogInfo($"[{fontName}] font patched (Normal)");
             }
@@ -121,13 +126,18 @@ class FontLoader
             {
                 DisableFont(__instance);
             }
+
+            int patchCount = 0;
             foreach (FontBundle bundle in fontBundles)
             {
                 if (!bundle.Transmit) continue;
+                if (__instance.fallbackFontAssetTable.Contains(bundle.Transmit)) continue;
+
                 __instance.fallbackFontAssetTable.Add(bundle.Transmit);
+                patchCount += 1;
             }
 
-            if (__instance.fallbackFontAssetTable.Count > 0)
+            if (patchCount > 0)
             {
                 Plugin.LogInfo($"[{fontName}] font patched (Transmit)");
             }
@@ -137,12 +147,18 @@ class FontLoader
         Plugin.LogWarning($"[{fontName}] not patched");
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(TextMeshProUGUI), "Awake")]
-    static void PatchText(TextMeshProUGUI __instance)
+    [HarmonyPostfix, HarmonyPatch(typeof(TMP_Text), "font", MethodType.Setter)]
+    static void PatchTextFontSetter(TMP_FontAsset value)
     {
-        if (__instance.font.fallbackFontAssetTable.Count > 0) return;
+        PatchFontAwake(value);
+    }
 
-        PatchFont(__instance.font);
+    [HarmonyPrefix, HarmonyPatch(typeof(TextMeshProUGUI), "Awake")]
+    static void PatchTextAwake(TextMeshProUGUI __instance)
+    {
+        if (__instance.font == null) return;
+
+        PatchFontAwake(__instance.font);
     }
 
     static void DisableFont(TMP_FontAsset font)
