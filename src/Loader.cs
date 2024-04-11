@@ -94,6 +94,8 @@ class FontLoader
     [HarmonyPrefix, HarmonyPatch(typeof(TMP_FontAsset), "Awake")]
     static void PatchFontAwake(TMP_FontAsset __instance)
     {
+        __instance.material.SetFloat("_UnderlayDilate", 1f);
+        __instance.material.SetFloat("_UnderlayOffsetX", 0.1f);
         string fontName = __instance.name;
 
         if (normalRegex.IsMatch(fontName))
